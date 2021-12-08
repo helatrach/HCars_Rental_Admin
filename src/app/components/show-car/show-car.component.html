@@ -1,0 +1,46 @@
+<h1>List of cars</h1>
+
+<button class="btn btn-outline btn-sm" (click)="addCar()">Add Car</button>
+
+<app-add-or-edit-car-modal *ngIf="carModalOpen" [car] = "" (finish)="handleFinish($event)"></app-add-or-edit-car-modal>
+
+<clr-datagrid>
+  <clr-dg-column [style.width.px]="50">ID</clr-dg-column>
+  <clr-dg-column [style.width.px]="20">Brand</clr-dg-column>
+  <clr-dg-column [style.width.px]="50">Model</clr-dg-column>
+  <clr-dg-column>Price Per day</clr-dg-column>
+  <clr-dg-column>circulation Date</clr-dg-column>
+  <clr-dg-column>Color</clr-dg-column>
+  <clr-dg-column>Mileage</clr-dg-column>
+  <clr-dg-column>Power</clr-dg-column>
+  <clr-dg-column >Availble</clr-dg-column>
+
+  <clr-dg-row *clrDgItems="let car of cars">
+
+    <clr-dg-action-overflow>
+      <button class="action-item" (click)="onEdit(car)">Edit</button>
+      <button class="action-item" (click)="onDelete(car)">Delete</button>
+    </clr-dg-action-overflow>
+
+
+
+
+    <clr-dg-cell>{{car.id}}</clr-dg-cell>
+    <clr-dg-cell>{{car.brand.name}}</clr-dg-cell>
+    <clr-dg-cell>{{car.model}}</clr-dg-cell>
+    <clr-dg-cell>${{car.pricePerDay}}</clr-dg-cell>
+    <clr-dg-cell>{{car.year}}</clr-dg-cell>
+    <clr-dg-cell>{{car.color}}</clr-dg-cell>
+    <clr-dg-cell>${{car.mileage}} km</clr-dg-cell>
+    <clr-dg-cell>{{car.power}} ch</clr-dg-cell>
+    <clr-dg-cell>{{car.available == true ? "Yes" : "No" }}</clr-dg-cell>
+  </clr-dg-row>
+
+  <clr-dg-footer>
+   <clr-dg-pagination #pagination [clrDgPageSize]="6">
+      <clr-dg-page-size [clrPageSizeOptions]="[10,20,50,100]">car per page</clr-dg-page-size>
+      {{pagination.firstItem + 1}} - {{pagination.lastItem + 1}} of {{pagination.totalItems}} Cars
+    </clr-dg-pagination>
+  </clr-dg-footer>
+
+</clr-datagrid>

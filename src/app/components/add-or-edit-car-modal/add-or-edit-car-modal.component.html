@@ -1,0 +1,80 @@
+<clr-wizard #wizard [clrWizardOpen]="true">
+  <clr-wizard-title>{{car ? 'Edit Car' : 'Add Car'}}</clr-wizard-title>
+  <clr-wizard-button [type]="'cancel'" (click) = "handleCancel()" >Cancel</clr-wizard-button>
+  <clr-wizard-button [type]="'previous'">Back</clr-wizard-button>
+  <clr-wizard-button [type]="'next'">Next</clr-wizard-button>
+  <clr-wizard-button [type]="'finish'" (click) = "handleFinish()">Done</clr-wizard-button>
+
+
+
+  <clr-wizard-page>
+    <ng-template clrPageTitle>Select Brand</ng-template>
+    <ng-template clrPageNavTitle>Step 1</ng-template>
+
+    <div class="clr-row brand">
+      <div class="clr-col-md-6" *ngFor="let brand of brands">
+        <a href="javascript:void(0)" class="card clickable" (click)="selectBrand(brand.id)" [ngClass]="{'active': brand.id== idBrand}">
+          <div class="card-block">
+            <p class="card-text text-center">
+              {{brand.name}}
+            </p>
+          </div>
+        </a>
+      </div>
+    </div>
+
+
+    <ng-template clrPageButtons="">
+      <clr-wizard-button [type]="'cancel'" (click) = "handleCancel()">Cancel</clr-wizard-button>
+      <clr-wizard-button [type]="'next'">Next</clr-wizard-button>
+    </ng-template>
+  </clr-wizard-page>
+
+<form [formGroup]="carForm">
+  <clr-wizard-page>
+    <ng-template clrPageTitle>Car Infos</ng-template>
+    <ng-template clrPageNavTitle>Step 2</ng-template>
+
+    <div formGroupName="carInfos">
+      <clr-input-container>
+        <label for="year">Circulation year</label>
+        <input id="year" clrInput placeholder="year ..." name="year" formControlName="year"/>
+      </clr-input-container>
+
+      <clr-input-container>
+        <label for="model">Model</label>
+        <input id="model" clrInput placeholder="model ..." name="model" formControlName="model"/>
+      </clr-input-container>
+
+      <clr-input-container>
+        <label for="pricePerDay">Price Per Day</label>
+        <input clrInput placeholder="price per day ..." name="pricePerDay" id="pricePerDay" formControlName="pricePerDay"/>
+      </clr-input-container>
+
+      <clr-input-container>
+        <label for="color">Color</label>
+        <input id="color" clrInput placeholder="Car color..." name="color" formControlName="color"/>
+      </clr-input-container>
+
+      <clr-input-container>
+        <label for="mileage">Mileage</label>
+        <input id="mileage" clrInput placeholder="Car mileage..." name="mileage" formControlName="mileage"/>
+      </clr-input-container>
+
+      <clr-input-container>
+        <label for="power">Car Power</label>
+        <input id="power" clrInput placeholder="Car power..." name="power" formControlName="power"/>
+      </clr-input-container>
+
+    </div>
+
+    <ng-template clrPageButtons="">
+      <clr-wizard-button [type]="'cancel'" (click) = "handleCancel()">Cancel</clr-wizard-button>
+      <clr-wizard-button [type]="'previous'">Back</clr-wizard-button>
+      <clr-wizard-button [type]="'finish'" [clrWizardButtonDisabled] = "isCarInfoInvalid" (click) = "handleFinish()">Done</clr-wizard-button>
+    </ng-template>
+
+  </clr-wizard-page>
+</form>
+
+</clr-wizard>

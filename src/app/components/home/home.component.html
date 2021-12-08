@@ -1,0 +1,25 @@
+<clr-main-container>
+  <clr-header class="header-2">
+     <div class="branding">
+       <a class="nav-link">
+        <clr-icon shape="home"  size="24"></clr-icon>
+        <span class="title">Admin HCARS</span>
+      </a>
+    </div>
+  </clr-header>
+  <div class="content-container">
+      <main class="content-area">
+          <app-show-car [cars]="cars"></app-show-car>
+      </main>
+      <nav class="sidenav" [clr-nav-level]="2">
+          <section class="sidenav-content">
+            <a href="javascript://" class="nav-link active">
+              Cars
+            </a>
+            <a href="javascript://" class="nav-link">
+              Reservations
+            </a>
+          </section>
+      </nav>
+  </div>
+</clr-main-container>
