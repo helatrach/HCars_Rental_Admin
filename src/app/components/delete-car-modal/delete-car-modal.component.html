@@ -1,1 +1,11 @@
-<p>delete-car-modal works!</p>
+<clr-modal [clrModalOpen] = "true">
+  <h3 class="modal-title">Delete Car</h3>
+  <div class="modal-body">
+    <p>Are you sure you want to Delete?</p>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline" (click)="cancelDelete()">Cancel</button>
+    <button type="button" class="btn btn-danger" (click)="confirmDelete()">confirm</button>
+  </div>
+</clr-modal>
+

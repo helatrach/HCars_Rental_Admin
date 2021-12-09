@@ -24,4 +24,17 @@ export class CarService {
     car.locationId =1;
    return  this.http.post(this.carUrl +"AddCar",car);
   }
+
+  updateCar(car : Car): Observable<Car>{
+    car.imageUrl = "url";
+    car.locationId =1;
+    return  this.http.put<Car>(this.carUrl +"UpdateCar",car);
+  }
+
+  deleteCar(car : Car): Observable<any>{
+      return  this.http.post(this.carUrl +"DeleteCar",car.id);
+  }
+
+
+
 }

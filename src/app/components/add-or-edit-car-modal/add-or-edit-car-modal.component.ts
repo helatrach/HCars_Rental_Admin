@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { Brand } from 'src/app/models/brand';
@@ -10,7 +10,7 @@ import { BrandService } from 'src/app/services/brand.service';
   templateUrl: './add-or-edit-car-modal.component.html',
   styleUrls: ['./add-or-edit-car-modal.component.css']
 })
-export class AddOrEditCarModalComponent implements OnInit , OnDestroy{
+export class AddOrEditCarModalComponent implements OnInit ,OnChanges ,OnDestroy{
 
   @Input() car : Car;
   @Output() finish = new EventEmitter();
@@ -34,6 +34,28 @@ export class AddOrEditCarModalComponent implements OnInit , OnDestroy{
         power : ['', Validators.required]
       })
     })
+  }
+  ngOnChanges(): void {
+    if(this.car){
+      this.updateForm(this.car)
+    }
+  }
+
+
+  updateForm(car : Car){
+    this.carForm.patchValue({
+      carInfos : {
+        year : car.year,
+        model: car.model,
+        pricePerDay : car.pricePerDay,
+        color : car.color,
+        mileage : car.mileage,
+        power : car.power
+      }
+
+    });
+
+     this.selectBrand(car.brandId);
   }
 
   selectBrand(id:number){
@@ -78,5 +100,7 @@ export class AddOrEditCarModalComponent implements OnInit , OnDestroy{
       }
     )
   }
+
+
 
 }

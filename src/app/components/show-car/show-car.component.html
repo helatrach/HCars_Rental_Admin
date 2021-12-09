@@ -2,7 +2,14 @@
 
 <button class="btn btn-outline btn-sm" (click)="addCar()">Add Car</button>
 
-<app-add-or-edit-car-modal *ngIf="carModalOpen" [car] = "" (finish)="handleFinish($event)"></app-add-or-edit-car-modal>
+<app-add-or-edit-car-modal *ngIf="carModalOpen" [car] = "selectedCar" (finish)="handleFinish($event)"></app-add-or-edit-car-modal>
+
+<app-delete-car-modal
+*ngIf="deleteCarModalOpen"
+[car] = "carToBeDeleted"
+(cancel) = "HandleCancelDelete()"
+(confirm) = "HandleConfirmDelete()"
+></app-delete-car-modal>
 
 <clr-datagrid>
   <clr-dg-column [style.width.px]="50">ID</clr-dg-column>
@@ -31,7 +38,7 @@
     <clr-dg-cell>${{car.pricePerDay}}</clr-dg-cell>
     <clr-dg-cell>{{car.year}}</clr-dg-cell>
     <clr-dg-cell>{{car.color}}</clr-dg-cell>
-    <clr-dg-cell>${{car.mileage}} km</clr-dg-cell>
+    <clr-dg-cell>${{car.mileage}} km </clr-dg-cell>
     <clr-dg-cell>{{car.power}} ch</clr-dg-cell>
     <clr-dg-cell>{{car.available == true ? "Yes" : "No" }}</clr-dg-cell>
   </clr-dg-row>
