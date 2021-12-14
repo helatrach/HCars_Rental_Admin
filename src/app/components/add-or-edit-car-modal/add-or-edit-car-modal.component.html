@@ -71,10 +71,30 @@
     <ng-template clrPageButtons="">
       <clr-wizard-button [type]="'cancel'" (click) = "handleCancel()">Cancel</clr-wizard-button>
       <clr-wizard-button [type]="'previous'">Back</clr-wizard-button>
-      <clr-wizard-button [type]="'finish'" [clrWizardButtonDisabled] = "isCarInfoInvalid" (click) = "handleFinish()">Done</clr-wizard-button>
+      <clr-wizard-button [type]="'next'" [clrWizardButtonDisabled] = "isProductInfosInValid">Next</clr-wizard-button>
     </ng-template>
 
   </clr-wizard-page>
+
+  <clr-wizard-page>
+    <ng-template clrPageTitle>car Image</ng-template>
+    <ng-template clrPageNavTitle>Step 3</ng-template>
+
+    <div formGroupName="carImage">
+      <clr-input-container>
+        <label for="image">Image</label>
+        <input clrInput name="image" id="image" (change)="detectFiles($event)" formControlName="image" type="file"  accept="image/*"/>
+      </clr-input-container>
+
+    </div>
+
+    <ng-template clrPageButtons="">
+      <clr-wizard-button [type]="'cancel'" (click) = "handleCancel()">Cancel</clr-wizard-button>
+      <clr-wizard-button [type]="'previous'">Back</clr-wizard-button>
+      <clr-wizard-button [type]="'finish'" [clrWizardButtonDisabled] = "isIllustrationsInValid" (click) = "handleFinish()">Done</clr-wizard-button>
+    </ng-template>
+  </clr-wizard-page>
+
 </form>
 
 </clr-wizard>

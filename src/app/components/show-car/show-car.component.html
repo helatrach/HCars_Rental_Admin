@@ -21,6 +21,7 @@
   <clr-dg-column>Mileage</clr-dg-column>
   <clr-dg-column>Power</clr-dg-column>
   <clr-dg-column >Availble</clr-dg-column>
+  <clr-dg-column [style.width.px]="50">Image</clr-dg-column>
 
   <clr-dg-row *clrDgItems="let car of cars">
 
@@ -41,6 +42,7 @@
     <clr-dg-cell>${{car.mileage}} km </clr-dg-cell>
     <clr-dg-cell>{{car.power}} ch</clr-dg-cell>
     <clr-dg-cell>{{car.available == true ? "Yes" : "No" }}</clr-dg-cell>
+    <clr-dg-cell><img [src]="baseUrlImage+car.imageUrl" width="50"  [alt]="car.model"></clr-dg-cell>
   </clr-dg-row>
 
   <clr-dg-footer>

@@ -1,6 +1,10 @@
+import { HttpEventType } from '@angular/common/http';
 import { Component, Input, OnInit } from '@angular/core';
+import { error } from 'protractor';
 import { Car } from 'src/app/models/car';
 import { CarService } from 'src/app/services/car.service';
+import { FileUploadService } from 'src/app/services/file-upload.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-show-car',
@@ -14,7 +18,11 @@ export class ShowCarComponent implements OnInit {
   deleteCarModalOpen = false;
   carToBeDeleted : Car;
   selectedCar : Car;
-  constructor(private carService : CarService) { }
+  baseUrlImage = environment.api_show ;
+  uploadProgress = 0;
+
+  file : File;
+  constructor(private carService : CarService, private fileService : FileUploadService) { }
 
   ngOnInit(): void {
   }
@@ -34,38 +42,39 @@ export class ShowCarComponent implements OnInit {
     this.carModalOpen = true;
   }
 
-  handleFinish(car){
-    if(car){
+  uploadImage(event){
+    return new Promise(
+      (resolve, reject) =>{
+       switch (event.type) {
+         case HttpEventType.Sent:
+           break;
+         case HttpEventType.UploadProgress:
+             this.uploadProgress = Math.round(event.loaded / event.total * 100);
+             if(this.uploadProgress = 100 ){
+               resolve(true);
+             }
+             break;
+         case HttpEventType.Response:
+          console.log(event.body);
+          setTimeout(() => {
+            this.uploadProgress = 0
+          }, 1500);
+       }
+      }
+    )
 
+
+ }
+
+
+  handleFinish(event){
+    if(event.car){
       if(this.selectedCar){
-
-        car.id = this.selectedCar.id;
-        this.carService.updateCar(car).subscribe(
-          (data : Car) => {
-            if(data){
-              let index = this.cars.findIndex(c => c.id == car.id);
-              this.cars = [
-                ...this.cars.slice(0,index),
-                data,
-                ...this.cars.slice(index+1)
-              ]
-            }
-          },
-          (error) => {console.log("error", error);}
-        );
-
+        this.updateCarToApi(event)
       }else{
-        this.carService.addcar(car).subscribe(
-          (data : Car) => {
-            if(data){
-              this.cars.push(data);
-            }
-          },
-          (error) => {console.log("error", error);}
-        );
+        this.addCarToApi(event)
       }
     }
-
     this.carModalOpen = false;
   }
 
@@ -81,11 +90,80 @@ export class ShowCarComponent implements OnInit {
          let index = this.cars.findIndex(c=>c.id == this.carToBeDeleted.id);
          this.cars.splice(index,1);
          this.deleteCarModalOpen = false;
+         this.fileService.deleteFile(this.carToBeDeleted.imageUrl).subscribe(
+
+          (data)=> {
+            console.log(data)
+          },
+          (error) => {
+            console.log("error" + error);
+          }
+        )
+
+
         }
       },
       (error) => {console.log("error", error);}
     );
   }
 
+
+  addCarToApi(event){
+    this.carService.addcar(event.car).subscribe(
+      (data : Car) => {
+        if(data){
+          if(event.file){
+            this.fileService.uploadImage(event.file, data.id).subscribe(
+              (data)=> {
+              },
+              (error) => {
+                console.log("error" + error);
+
+              }
+            )
+          }
+          this.cars.push(data);
+        }
+      },
+      (error) => {console.log("error", error);}
+    );
+  }
+
+  updateCarToApi(event){
+
+    event.car.id = this.selectedCar.id;
+    this.carService.updateCar(event.car).subscribe(
+      (data : Car) => {
+        if(data){
+          if(event.file){
+            this.fileService.uploadImage(event.file, this.selectedCar.id).subscribe(
+              (data)=> {
+              },
+              (error) => {
+                console.log("error" + error);
+              }
+            )
+            this.fileService.deleteFile(event.car.oldImageUrl).subscribe(
+
+              (data)=> {
+                console.log(data)
+              },
+              (error) => {
+                console.log("error" + error);
+              }
+            )
+
+          }
+          let index = this.cars.findIndex(c => c.id == event.car.id);
+          this.cars = [
+            ...this.cars.slice(0,index),
+            data,
+            ...this.cars.slice(index+1)
+          ]
+        }
+      },
+      (error) => {console.log("error", error);}
+    );
+  }
 
 }

@@ -32,6 +32,9 @@ export class AddOrEditCarModalComponent implements OnInit ,OnChanges ,OnDestroy{
         color : ['', Validators.required],
         mileage : ['', Validators.required],
         power : ['', Validators.required]
+      }),
+      carImage : fb.group({
+        image :['', Validators.required]
       })
     })
   }
@@ -54,8 +57,8 @@ export class AddOrEditCarModalComponent implements OnInit ,OnChanges ,OnDestroy{
       }
 
     });
-
-     this.selectBrand(car.brandId);
+    car.oldImageUrl = car.imageUrl;
+    this.selectBrand(car.brandId);
   }
 
   selectBrand(id:number){
@@ -75,10 +78,19 @@ export class AddOrEditCarModalComponent implements OnInit ,OnChanges ,OnDestroy{
   handleFinish(){
     const car = {
       ...this.carForm.get('carInfos').value,
-      brandId : this.idBrand
+      brandId : this.idBrand,
+      oldImageUrl : null
+    }
+    if(this.car){
+      car.oldImageUrl = this.car.oldImageUrl
+    }
+    if (this.file){
+      car.imageUrl =  this.file.name;
+    }else{
+      car.imageUrl = this.car.oldImageUrl;
     }
 
-    this.finish.emit(car);
+    this.finish.emit({car : car, file : this.file ? this.file : null});
     this.close();
   }
 
@@ -100,7 +112,9 @@ export class AddOrEditCarModalComponent implements OnInit ,OnChanges ,OnDestroy{
       }
     )
   }
-
+  detectFiles(event){
+    this.file = event.target.files[0]
+  }
 
 
 }
