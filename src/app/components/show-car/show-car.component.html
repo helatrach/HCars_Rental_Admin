@@ -39,7 +39,7 @@
     <clr-dg-cell>${{car.pricePerDay}}</clr-dg-cell>
     <clr-dg-cell>{{car.year}}</clr-dg-cell>
     <clr-dg-cell>{{car.color}}</clr-dg-cell>
-    <clr-dg-cell>${{car.mileage}} km </clr-dg-cell>
+    <clr-dg-cell>{{car.mileage}} km </clr-dg-cell>
     <clr-dg-cell>{{car.power}} ch</clr-dg-cell>
     <clr-dg-cell>{{car.available == true ? "Yes" : "No" }}</clr-dg-cell>
     <clr-dg-cell><img [src]="baseUrlImage+car.imageUrl" width="50"  [alt]="car.model"></clr-dg-cell>

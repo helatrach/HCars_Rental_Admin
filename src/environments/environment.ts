@@ -7,7 +7,7 @@ export const environment = {
   api_cars : 'https://localhost:7142/api/Cars/',
   api_brands : 'https://localhost:7142/api/Brand/',
   api_upload : 'https://localhost:7142/api/Upload/UploadImage',
-  api_show : 'https://localhost:7142/Upload/',
+  api_show : 'https://localhost:7142/api/upload/readimage?filename=',
   api_delete_file : "https://localhost:7142/api/Upload/Delete"
 };
 
